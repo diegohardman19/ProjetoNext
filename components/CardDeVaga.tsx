@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Vaga } from "@/data/vagas";
+import type { Vaga } from "@/dados/vagas";
 
 export default function CardDeVaga({ vaga }: { vaga: Vaga }) {
   return (

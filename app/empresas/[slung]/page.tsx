@@ -3,17 +3,17 @@ import { notFound } from "next/navigation";
 import { listarEmpresas, buscarEmpresa, listarVagas } from "@/lib/api";
 import AbasDaEmpresa from "@/components/AbasDaEmpresa";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slung: string }> };
 
-// A pasta é [slug], então a chave é `slug`. Mesma regra da frente 1.
+// A pasta é [slung], então a chave precisa ser `slung`.
 export async function generateStaticParams() {
   const empresas = await listarEmpresas();
-  return empresas.map((empresa) => ({ slug: empresa.slug }));
+  return empresas.map((empresa) => ({ slung: empresa.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const empresa = await buscarEmpresa(slug);
+  const { slung } = await params;
+  const empresa = await buscarEmpresa(slung);
   if (!empresa) return { title: "Empresa não encontrada · Leque de Vagas" };
 
   return {
@@ -23,13 +23,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PaginaDaEmpresa({ params }: Props) {
-  const { slug } = await params;
+  const { slung } = await params;
 
   // As duas buscas não dependem uma da outra, então elas podem acontecer
   // AO MESMO TEMPO. Dois `await` em linhas separadas seriam uma espera
   // atrás da outra — o dobro do tempo, de graça.
   const [empresa, vagas] = await Promise.all([
-    buscarEmpresa(slug),
+    buscarEmpresa(slung),
     listarVagas(),
   ]);
 
