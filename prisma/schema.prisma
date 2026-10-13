@@ -1,0 +1,33 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Empresa {
+  slug  String @id
+  nome  String
+  sobre String
+  site  String
+  vagas Vaga[]
+}
+
+model Vaga {
+  id              String   @id @default(cuid())
+  titulo          String
+  empresaSlug     String
+  area            String
+  senioridade     String
+  local           String
+  aceitaIniciante Boolean  @default(false)
+  descricao       String
+  criadaEm        DateTime @default(now())
+  empresa         Empresa  @relation(fields: [empresaSlug], references: [slug])
+
+  @@index([empresaSlug])
+}
